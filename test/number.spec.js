@@ -7,8 +7,8 @@ describe('===== Number Validator =====', () => {
 
     before(() => {
         validator = new Validator({
-            number: Schema.number().isRequired(),
-            //int: Schema.number().isInteger(),
+            number: Schema.number().required(),
+            int: Schema.number().integer(),
             //float: Schema.number().isFloat(),
             //range: Schema.number().rangeOf(1, 10),
             //greaterThan: Schema.number().greaterThan(0),
@@ -23,9 +23,15 @@ describe('===== Number Validator =====', () => {
     });
 
     it('type validate', () => {
-        return validator.validate({ number: 123 }, { fields: 'number' }).then(ret => expect(ret).to.be.undefined);
+        return validator.validate({ number: undefined }, { fields: 'number' })
+            .catch(errors => expect(errors[0].errors).has.length(2));
         //expect(validator.validate({number: 123})).to.be.null;
         //expect(validator.validate({number: undefined})['number']).to.have.keys('type', 'isRequired');
+    });
+
+    it('validate integer', () => {
+        return validator.validate({int: .5}, { fields: ['int'] })
+            .catch(errors => expect(errors[0].errors).has.length(1));
     });
 
     // it('validate integer', () => {

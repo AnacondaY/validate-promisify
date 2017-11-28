@@ -14,12 +14,12 @@ A asynchronous form validator by using promise.
     import Validator, { Schema } from 'validate-promisify';
     
     const validator = new Validator({
-        username: Schema.string().isRequired(),
+        name: Schema.string().required(),
         age: Schema.number().integer()
     });
 
     validator.validate({
-        username: undefined,
+        name: undefined,
         age: 9.9
     }).catch(errors => console.log(errors));
 ```
