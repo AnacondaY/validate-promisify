@@ -105,7 +105,7 @@ export default class BaseSchema {
         return this;
     }
 
-    isRequired(message: String): Object{
+    required(message: String): Object{
         this._rules.unshift({
             message,
             name:'isRequired',
