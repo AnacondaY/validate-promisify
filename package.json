@@ -1,5 +1,5 @@
 {
-  "name": "promisfied-validator",
+  "name": "validate-promisify",
   "version": "1.0.0",
   "description": "A asynchronous form validator by using promise",
   "main": "index.js",

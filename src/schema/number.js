@@ -14,7 +14,7 @@ class NumberSchema extends BaseSchema {
         });
     }
 
-    isInteger(message: ?String): Object{
+    integer(message: ?String): Object{
         super.customizeRule({
             message,
             name: 'isInteger',
@@ -23,7 +23,7 @@ class NumberSchema extends BaseSchema {
         return this;
     }
 
-    isFloat(message: ?String): Object{
+    float(message: ?String): Object{
         super.customizeRule({
             message,
             name: 'isFloat',
