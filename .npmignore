@@ -1,0 +1,8 @@
+node_modules
+src
+test
+coverage
+webpack.config.js
+*.log
+.vscode
+.DS_Store
