@@ -1,5 +1,6 @@
 # validate-promisify
 A asynchronous form validator by using promise.
+[![Build Status](https://travis-ci.org/AnacondaY/validate-promisify.svg?branch=master)](https://travis-ci.org/AnacondaY/validate-promisify)
 ## 安装
 ```
     npm i -S validate-promisify

@@ -23,8 +23,7 @@ describe('===== Number Validator =====', () => {
     });
 
     it('type validate', () => {
-        validator.validate({ number: 123 }, { fields: 'number' }).then(ret => expect(ret).to.be.undefined);
-        validator.validate({ number: '123' }, { fields: 'number' }).then(ret => expect(ret).to.be.undefined);
+        return validator.validate({ number: 123 }, { fields: 'number' }).then(ret => expect(ret).to.be.undefined);
         //expect(validator.validate({number: 123})).to.be.null;
         //expect(validator.validate({number: undefined})['number']).to.have.keys('type', 'isRequired');
     });
