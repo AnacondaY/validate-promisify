@@ -1,5 +1,5 @@
 # validate-promisify
-A asynchronous form validator by using promise.
+一个Promise风格的表单异步验证工具.
 
 [![Build Status](https://travis-ci.org/AnacondaY/validate-promisify.svg?branch=master)](https://travis-ci.org/AnacondaY/validate-promisify)
 ## 安装
@@ -22,5 +22,11 @@ A asynchronous form validator by using promise.
         name: undefined,
         age: 9.9
     }).catch(errors => console.log(errors));
+
+    //输出
+    // {
+    //   name: [ '必填', '请输出字符串' ], 
+    //   age: ['请输入整数'] 
+    // }
 ```
 
