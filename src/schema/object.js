@@ -9,7 +9,13 @@ class ObjectSchema extends BaseSchema {
         this.customizeRule({
             message,
             name: 'type',
-            validator: value => typeof value === 'object'
+            validator: value => {
+                const valid = typeof value === 'object';
+                if(valid){
+                    this._isObject = true;
+                }
+                return valid;
+            }
         });
     }
 
@@ -30,10 +36,13 @@ class ObjectSchema extends BaseSchema {
             message,
             name: 'shapeOf',
             validator: value => {
-                return Object.entries(shape).every(entry => {
-                    const [ key, schema ] = entry;
-                    return schema.validate(value[key]);
-                });
+                if(this._isObject){
+                    return Object.entries(shape).every(entry => {
+                        const [ key, schema ] = entry;
+                        return schema.syncValidate(value[key]);
+                    });
+                }
+                return false;
             },
             extraParams: {
                 shape

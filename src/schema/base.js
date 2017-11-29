@@ -48,18 +48,16 @@ export default class BaseSchema {
     }
 
     syncValidate(value: mixed, stopByFirstInvalidRule: Boolean = false): mixed{
-        const errors = {};
+        const errors = [];
         for(let i = 0; i < this._rules.length; i ++){
-            const { validator, message, name, extraParams } = this._rules[i];
+            let { validator, message, name, extraParams } = this._rules[i];
             const valid = validator(value);
             if(valid === false){
-                errors[name] = message || this._getDefaultMessage(name, extraParams) || '';
-                if(stopByFirstInvalidRule){
-                    break;
-                }
+                message = message || this._getDefaultMessage(name, extraParams) || '';
+                errors.push(message);
             }
         }
-        return isEmptyObject(errors) ? null : errors;
+        return !errors.length ? null : errors;
     }
 
     validate(value: mixed): Promise{
@@ -77,8 +75,8 @@ export default class BaseSchema {
                         .then(() => {
                             resolve(null);
                         })
-                        .catch(err => {
-                            resolve(err);
+                        .catch(() => {
+                            resolve(message);
                         });
                 }else{
                     resolve(null);
@@ -89,10 +87,10 @@ export default class BaseSchema {
         return Promise.all(promiseStack);
     }
 
-    async(promisify: Function, name: ?String){
+    async(promisify: Function, message: ?String){
         if(typeof promisify === 'function'){
             this._rules.push({
-                name: name || 'async',
+                message: message || '',
                 validator: value => promisify(value)
             });
         }

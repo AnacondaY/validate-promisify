@@ -80,10 +80,10 @@ class ArraySchema extends BaseSchema {
         return this;
     }
 
-    isUnique(message: ?String): Object{
+    unique(message: ?String): Object{
         this.customizeRule({
             message,
-            name: 'isUnique',
+            name: 'unique',
             validator: value => {
                 const map = {};
                 if(this._isArray){

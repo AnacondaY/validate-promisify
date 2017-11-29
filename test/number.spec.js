@@ -31,7 +31,8 @@ describe('===== Number Validator =====', () => {
     });
 
     it('type validate', () => {
-        validator
+        expect(validator.syncValidate({ value1: undefined })['value1']).has.length(2);
+        return validator
             .validate({ value1: undefined }, { fields: ['value1'] })
             .then(fullfill)
             .catch(errors => expect(errors['value1']).has.length(2))
@@ -39,7 +40,8 @@ describe('===== Number Validator =====', () => {
     });
 
     it('validate integer', () => {
-        validator
+        expect(validator.syncValidate({ value2: .1 })['value2']).has.length(1);
+        return validator
             .validate({value2: .1}, { fields: ['value2'] })
             .then(fullfill)
             .catch(errors => expect(errors['value2']).has.length(1))

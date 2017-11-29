@@ -22,20 +22,27 @@ export default class Validator{
 
     syncValidate(values: Object, options: ?Object = this._options): Object{
         const ret = {};
-        const { stopByFirstRule, stopByFirstField } = options;
+        const { stopByFirstRule, stopByFirstField, fields } = options;
         const entries = Object.entries(values);
+        
+        const pushToStack = (key, value) => {
+            const schema = this._schemaMap[key];
+            if(!(schema instanceof BaseSchema)){
+                throw new Error(`The schema '${key}' should be the instance of BaseSchema`);
+            }
+            const errors = schema.syncValidate(value, stopByFirstRule);
+            if(errors){
+                ret[key] = errors;
+            }
+        };
+        
         for(let i = 0; i < entries.length; i ++){
             const key = entries[i][0];
             const value = entries[i][1];
-            const schema = this._schemaMap[key];
-            if(schema){
-                const errors = schema.syncValidate(value, stopByFirstRule);
-                if(errors){
-                    ret[key] = errors;
-                    if(stopByFirstField){
-                        break;
-                    }
-                }
+            if(Array.isArray(fields) && fields.indexOf(key) !== -1){
+                pushToStack(key, value);
+            }else{
+                pushToStack(key, value);
             }
         }
         return isEmptyObject(ret) ? null : ret;
