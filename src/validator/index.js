@@ -1,5 +1,5 @@
 import BaseSchema from '../schema/base';
-import { isEmptyObject } from '../schema/utils';
+import { isEmptyObject, isObject } from '../schema/utils';
 
 const defaultOptions = {
     stopByFirstRule: false, 
@@ -9,6 +9,9 @@ const defaultOptions = {
 export default class Validator{
     
     constructor(schemaMap: Object, options: ?Object){
+        if(!isObject){
+            throw new Error(`'schemaMap' requires an object, but receives a(an) ${typeof schemaMap}`);
+        }
         this._schemaMap = schemaMap;
         this._options = {
             ...defaultOptions,
@@ -43,16 +46,16 @@ export default class Validator{
         const { fields } = options;
         
         const pushToStack = (key, value) => {
-            const promise = new Promise(resolve=> {
+            if(!(this._schemaMap[key] instanceof BaseSchema)){
+                throw new Error(`The schema '${key}' should be the instance of BaseSchema`);
+            }
+            const promise = new Promise(resolve => {
                 this._schemaMap[key].validate(value).then(result => {
                     const errors = result.filter(ret => ret !== null);
                     if(errors.length){
-                        resolve({
-                            field: key,
-                            errors
-                        });
+                        resolve({ [key]: errors });
                     }else{
-                        resolve(false);
+                        resolve();
                     }     
                 });
             });
@@ -72,9 +75,14 @@ export default class Validator{
 
         return new Promise((resolve, reject) => {
             Promise.all(promiseStack).then(errors => {              
-                errors = errors.filter(err => err !== false);
-                if(errors.length){
-                    reject(errors);
+                const messages = errors.reduce((prevErr, cur) => {
+                    if(cur && prevErr){
+                        return Object.assign({}, prevErr, cur);
+                    }
+                    return {};
+                });
+                if(messages){
+                    reject(messages);
                 }else{
                     resolve();
                 }

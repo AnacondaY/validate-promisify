@@ -12,7 +12,7 @@ export default class BaseSchema {
     }
 
     get _selfLocale(){
-        return BaseSchema._locale[this._type];
+        return BaseSchema._locale[this._type] || {};
     }
 
     _isEmptyValue(value: mixed): Boolean{
@@ -44,7 +44,7 @@ export default class BaseSchema {
 
     _getDefaultMessage(name: String, extraParams: Object = {}): String{
         const message = this._selfLocale[name];
-        return this._transform(message, extraParams);
+        return this._transform(message || '', extraParams);
     }
 
     syncValidate(value: mixed, stopByFirstInvalidRule: Boolean = false): mixed{
@@ -70,10 +70,7 @@ export default class BaseSchema {
                 let valid = validator(value);
                 if(valid === false){
                     message = message || this._getDefaultMessage(name, extraParams) || '';
-                    resolve({
-                        type: name, 
-                        message 
-                    });
+                    resolve(message);
                 }else if(valid && valid.then){
                     valid = Promise.resolve(valid);
                     valid
@@ -81,10 +78,7 @@ export default class BaseSchema {
                             resolve(null);
                         })
                         .catch(err => {
-                            resolve({ 
-                                type: name,
-                                message: err
-                            });
+                            resolve(err);
                         });
                 }else{
                     resolve(null);
@@ -105,10 +99,10 @@ export default class BaseSchema {
         return this;
     }
 
-    required(message: String): Object{
+    required(message: ?String): Object{
         this._rules.unshift({
             message,
-            name:'isRequired',
+            name:'required',
             validator: value => this._isEmptyValue(value)
         });
         return this;

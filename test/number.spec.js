@@ -1,69 +1,97 @@
+
 import { expect } from 'chai';
+import sinon from 'sinon';
 import Validator, { Schema } from '../src';
 
 describe('===== Number Validator =====', () => {
 
     let validator;
 
+    let fullfill;
+
     before(() => {
         validator = new Validator({
-            number: Schema.number().required(),
-            int: Schema.number().integer(),
-            //float: Schema.number().isFloat(),
-            //range: Schema.number().rangeOf(1, 10),
-            //greaterThan: Schema.number().greaterThan(0),
-            //lessThan: Schema.number().lessThan(1),
-            //oneOf: Schema.number().oneOf([1, 2, 3]),
-            //pattern: Schema.number().pattern(/^[0-9]*[1-9][0-9]*$/)
+            value1: Schema.number().required(),
+            value2: Schema.number().integer(),
+            value3: Schema.number().float(),
+            value4: Schema.number().rangeOf(1, 10),
+            value5: Schema.number().greaterThan(0),
+            value6: Schema.number().lessThan(1),
+            value7: Schema.number().oneOf([1, 2, 3]),
+            value8: Schema.number().pattern(/^[0-9]*[1-9][0-9]*$/)
         });
     });
+
+    beforeEach(() => {
+        fullfill = sinon.spy();
+    })
 
     after(() => {
         validator = null;
     });
 
     it('type validate', () => {
-        return validator.validate({ number: undefined }, { fields: 'number' })
-            .catch(errors => expect(errors[0].errors).has.length(2));
-        //expect(validator.validate({number: 123})).to.be.null;
-        //expect(validator.validate({number: undefined})['number']).to.have.keys('type', 'isRequired');
+        validator
+            .validate({ value1: undefined }, { fields: ['value1'] })
+            .then(fullfill)
+            .catch(errors => expect(errors['value1']).has.length(2))
+            .then(expect(fullfill.called).to.be.false);
     });
 
     it('validate integer', () => {
-        return validator.validate({int: .5}, { fields: ['int'] })
-            .catch(errors => expect(errors[0].errors).has.length(1));
+        validator
+            .validate({value2: .1}, { fields: ['value2'] })
+            .then(fullfill)
+            .catch(errors => expect(errors['value2']).has.length(1))
+            .then(expect(fullfill.called).to.be.false);
     });
 
-    // it('validate integer', () => {
-    //     expect(validator.validate({int: 1})).to.be.null;
-    //     expect(validator.validate({int: .1})['int']).to.have.keys('isInteger');
-    // });
+    it('validate float', () => {
+        validator
+            .validate({value3: 1}, { fields: ['value3'] })
+            .then(fullfill)
+            .catch(errors => expect(errors['value3']).has.length(1))
+            .then(expect(fullfill.called).to.be.false);
+    });
 
-    // it('validate float', () => {
-    //     expect(validator.validate({float: .1})).to.be.null;
-    //     expect(validator.validate({float: 1})['float']).to.have.keys('isFloat');
-    // });
+    it('validate range', () => {
+        validator
+            .validate({ value4: 0 }, { fields: ['value4'] })
+            .then(fullfill)
+            .catch(errors => expect(errors['value4']).has.length(1))
+            .then(expect(fullfill.called).to.be.false);
+    });
 
-    // it('validate range', () => {
-    //     expect(validator.validate({range: 5})).to.be.null;
-    //     expect(validator.validate({range: -5})['range']).to.have.keys('rangeOf');
-    // });
+    it('validate greater', () => {
+        validator
+            .validate({ value5: -1 }, { fields: ['value5'] })
+            .then(fullfill)
+            .catch(errors => expect(errors['value5']).has.length(1))
+            .then(expect(fullfill.called).to.be.false);
+    });
 
-    // it('validate greater and less', () => {
-    //     expect(validator.validate({greaterThan: 1})).to.be.null;
-    //     expect(validator.validate({lessThan: 0})).to.be.null;
-    //     expect(validator.validate({greaterThan: -1})['greaterThan']).to.have.keys('greaterThan');
-    //     expect(validator.validate({lessThan: 1})['lessThan']).to.have.keys('lessThan');
-    // });
+    it('validate less', () => {
+        validator
+            .validate({ value6: 2 }, { fields: ['value6'] })
+            .then(fullfill)
+            .catch(errors => expect(errors['value6']).has.length(1))
+            .then(expect(fullfill.called).to.be.false);
+    });
 
-    // it('validate oneOf', () => {
-    //     expect(validator.validate({oneOf: 2})).to.be.null;
-    //     expect(validator.validate({oneOf: 0})['oneOf']).to.have.keys('oneOf');
-    // });
+    it('validate oneOf', () => {
+        validator
+            .validate({ value7: 0 }, { fields: ['value7'] })
+            .then(fullfill)
+            .catch(errors => expect(errors['value7']).has.length(1))
+            .then(expect(fullfill.called).to.be.false);
+    });
 
-    // it('validate pattern', () => {
-    //     expect(validator.validate({pattern: 1})).to.be.null;
-    //     expect(validator.validate({pattern: -1})['pattern']).to.have.keys('pattern');
-    // });
+    it('validate pattern', () => {
+        validator
+            .validate({ value8: -1 }, { fields: ['value8'] })
+            .then(fullfill)
+            .catch(errors => expect(errors['value8']).has.length(1))
+            .then(expect(fullfill.called).to.be.false);
+    });
 
 });

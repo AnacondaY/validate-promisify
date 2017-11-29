@@ -6,11 +6,20 @@ export default {
         rangeOf: '输入值应该大于等于{{min}}, 小于等于{{max}}',
         oneOf: '输入值应为{{numberList}}中的一个',
         pattern: '输入值不符合指定格式',
-        isInteger: '请输入整数',
-        isFloat: '请输入浮点数',
-        isRequired: '必填'
+        integer: '请输入整数',
+        float: '请输入浮点数',
+        required: '必填'
     },
     string: {
         type: '请输入字符串'
+    },
+    boolean:{
+
+    },
+    array: {
+
+    },
+    object: {
+
     }
 };

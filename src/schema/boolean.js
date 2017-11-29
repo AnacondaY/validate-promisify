@@ -11,19 +11,19 @@ class BooleanSchema extends BaseSchema{
         });
     }
 
-    isTrue(message: ?String): Object{
+    truthy(message: ?String): Object{
         super.customizeRule({
             message,
-            name: 'isTrue',
+            name: 'truthy',
             validator: value => value === true
         });
         return this;
     }
 
-    isFalse(message: ?String): Object {
+    falsy(message: ?String): Object {
         super.customizeRule({
             message,
-            name: 'isFalse',
+            name: 'falsy',
             validator: value => value === false
         });
         return this;

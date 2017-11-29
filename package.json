@@ -19,13 +19,14 @@
     "flow-bin": "^0.59.0",
     "istanbul": "^0.4.5",
     "mocha": "^4.0.1",
+    "sinon": "^4.1.2",
     "webpack": "^3.8.1",
     "webpack-bundle-analyzer": "^2.9.1"
   },
   "scripts": {
     "build": "webpack",
-    "test": "mocha --compilers js:babel-register ./test/number.spec.js",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-register ./test/number.spec.js "
+    "test": "mocha --require babel-core/register ./test/*.spec.js",
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --require js:babel-register ./test/string.spec.js"
   },
   "keywords": [
     "form",

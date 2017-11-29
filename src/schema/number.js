@@ -17,7 +17,7 @@ class NumberSchema extends BaseSchema {
     integer(message: ?String): Object{
         super.customizeRule({
             message,
-            name: 'isInteger',
+            name: 'integer',
             validator: value => /^-?\d+$/.test(value)
         });
         return this;
@@ -26,7 +26,7 @@ class NumberSchema extends BaseSchema {
     float(message: ?String): Object{
         super.customizeRule({
             message,
-            name: 'isFloat',
+            name: 'float',
             validator: value => /^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$/.test(value)
         });
         return this;

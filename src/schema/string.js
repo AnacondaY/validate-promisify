@@ -85,8 +85,9 @@ class StringSchema extends BaseSchema {
         super.customizeRule({
             message,
             name: 'ipv4',
-            validator: value => /\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b/.test(value)
+            validator: value => /((25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))/.test(value)
         });
+        return this;
     }
 
     pattern(regexp: RegExp, message: ?String): Object{
@@ -94,6 +95,15 @@ class StringSchema extends BaseSchema {
             message,
             name: 'pattern',
             validator: value => regexp.test(value)
+        });
+        return this;
+    }
+
+    ChineseID(message: ?String): Object {
+        super.customizeRule({
+            message,
+            name: 'ChineseID',
+            validator: value => /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(value)
         });
         return this;
     }
