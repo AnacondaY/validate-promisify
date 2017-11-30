@@ -15,7 +15,8 @@ describe('===== String Validator =====', () => {
             value4: Schema.string().email(),
             value5: Schema.string().notChinese(),
             value6: Schema.string().ipv4(),
-            value7: Schema.string().ChineseID()
+            value7: Schema.string().ChineseID(),
+            value8: Schema.string().maxLength(10)
         })
     });
 
@@ -28,7 +29,7 @@ describe('===== String Validator =====', () => {
     });
 
     it('validate type', () => {
-        validator
+        return validator
             .validate({value1: undefined}, { fields: ['value1'] })
             .then(fullfill)
             .catch(errors => expect(errors['value1']).has.length(2))
@@ -36,7 +37,7 @@ describe('===== String Validator =====', () => {
     })
 
     it('validate oneOf', () => {
-        validator
+        return validator
             .validate({ value2: 'd' }, { fields: ['value2'] })
             .then(fullfill)
             .catch(errors => expect(errors['value2']).has.length(1))
@@ -44,34 +45,40 @@ describe('===== String Validator =====', () => {
     });
 
     it('validate url', () => {
-        validator
+        return validator
             .validate({ value3: 'https://mochajs.org/' }, { fields: [ 'value3' ] })
             .then(empty => expect(empty).to.be.undefined);
     });
 
     it('validate email', () => {
-        validator
+        return validator
             .validate({ value4: 'soloduke1@163.com' }, { fields: [ 'value4' ] })
             .then(empty => expect(empty).to.be.undefined);
     });
 
     it('validate notChinese', () => {
-        validator
+        return validator
             .validate({ value5: '我是谁' }, { fields: ['value5'] })
             .catch(errors => expect(errors['value5']).has.length(1))
     });
 
     it('validate ipv4', () => {
-        validator
+        return validator
             .validate({ value6: '172.17.28.39' }, { fields: ['value6'] })
             .then(empty => expect(empty).to.be.undefined);
     });
 
-
     it('validate ChineseID', () => {
-        validator
+        return validator
             .validate({ value7: '524722199403223300' }, { fields: ['value7'] })
             .then(empty => expect(empty).to.be.undefined);
+    });
+
+    it('validate maxLength', () => {
+        return validator
+            .validate({ value8: '1234567890' })
+            .then(fullfill)
+            .then(() => expect(fullfill.called).to.be.true);
     });
 
 })

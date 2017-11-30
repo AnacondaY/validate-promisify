@@ -36,7 +36,7 @@ describe('===== Number Validator =====', () => {
             .validate({ value1: undefined }, { fields: ['value1'] })
             .then(fullfill)
             .catch(errors => expect(errors['value1']).has.length(2))
-            .then(expect(fullfill.called).to.be.false);
+            .then(() => expect(fullfill.called).to.be.false);
     });
 
     it('validate integer', () => {
@@ -45,55 +45,55 @@ describe('===== Number Validator =====', () => {
             .validate({value2: .1}, { fields: ['value2'] })
             .then(fullfill)
             .catch(errors => expect(errors['value2']).has.length(1))
-            .then(expect(fullfill.called).to.be.false);
+            .then(() => expect(fullfill.called).to.be.false);
     });
 
     it('validate float', () => {
-        validator
+        return validator
             .validate({value3: 1}, { fields: ['value3'] })
             .then(fullfill)
             .catch(errors => expect(errors['value3']).has.length(1))
-            .then(expect(fullfill.called).to.be.false);
+            .then(() => expect(fullfill.called).to.be.false);
     });
 
     it('validate range', () => {
-        validator
+        return validator
             .validate({ value4: 0 }, { fields: ['value4'] })
             .then(fullfill)
             .catch(errors => expect(errors['value4']).has.length(1))
-            .then(expect(fullfill.called).to.be.false);
+            .then(() => expect(fullfill.called).to.be.false);
     });
 
     it('validate greater', () => {
-        validator
+        return validator
             .validate({ value5: -1 }, { fields: ['value5'] })
             .then(fullfill)
             .catch(errors => expect(errors['value5']).has.length(1))
-            .then(expect(fullfill.called).to.be.false);
+            .then(() => expect(fullfill.called).to.be.false);
     });
 
     it('validate less', () => {
-        validator
+        return validator
             .validate({ value6: 2 }, { fields: ['value6'] })
             .then(fullfill)
             .catch(errors => expect(errors['value6']).has.length(1))
-            .then(expect(fullfill.called).to.be.false);
+            .then(() => expect(fullfill.called).to.be.false);
     });
 
     it('validate oneOf', () => {
-        validator
+        return validator
             .validate({ value7: 0 }, { fields: ['value7'] })
             .then(fullfill)
             .catch(errors => expect(errors['value7']).has.length(1))
-            .then(expect(fullfill.called).to.be.false);
+            .then(() => expect(fullfill.called).to.be.false);
     });
 
     it('validate pattern', () => {
-        validator
+        return validator
             .validate({ value8: -1 }, { fields: ['value8'] })
             .then(fullfill)
             .catch(errors => expect(errors['value8']).has.length(1))
-            .then(expect(fullfill.called).to.be.false);
+            .then(() => expect(fullfill.called).to.be.false);
     });
 
 });
