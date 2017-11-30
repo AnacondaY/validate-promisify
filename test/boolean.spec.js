@@ -25,7 +25,7 @@ describe('===== Boolean Validator =====', () => {
             value: Schema.boolean().falsy()
         }).validate({
             value: false
-        }).then(empty => expect(empty).to.be.undefined);
+        }).then(empty => expect(empty).to.undefined);
     });
 
 });

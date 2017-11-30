@@ -45,13 +45,13 @@ class NumberSchema extends BaseSchema {
         return this;
     }
 
-    oneOf(numberList: Array<Number>, message: ?String): Object{
+    oneOf(list: Array<Number>, message: ?String): Object{
         super.customizeRule({
             message,
             name: 'oneOf',
-            validator: value => numberList.indexOf(value) !== -1,
+            validator: value => list.indexOf(value) !== -1,
             extraParams: {
-                numberList
+                list
             }
         });
         return this;
