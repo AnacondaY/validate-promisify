@@ -1,6 +1,6 @@
 {
   "name": "validate-promisify",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "A asynchronous form validator by using promise",
   "main": "./release/index.js",
   "dependencies": {},

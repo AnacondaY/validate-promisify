@@ -69,8 +69,8 @@
     }).catch(errors => console.log(errors));
 
     //输出 { username: ['用户名已被注册'] }
-
 ```
+
 ## 同步验证
 ```Validator.prototype.validate```采用将返回```Promise```, 若验证用过将被```resolve```, 而验证失败则会被```reject```。
 此外, 利用```Validator.prototype.syncValidate```可进行同步验证。
@@ -118,22 +118,22 @@
     const validator = new Validator({
         //一共接受4个配置参数
         character: Schema.string().customizeRule({
+
             //必填,且必须返回一个Boolean或者Promise
             validator: value => /\*\.\&\$\@/.test(value),
+
             //可选,若填写将覆盖本地化配置的默认提示
             message: '不能包含特殊字符',
+
             //可选,本地化文件中提示的key值
             name: 'specification',
+
             //可选, 本地化文件中{{  }}解析的参数
             extraParams: {
                 list: ['*', '.', '&', '$', '@']
             }
-        });
-    });
 
-    const result = validator.syncValidate({
-        name: undefined,
-        age: 9.9
+        });
     });
 ```
 ## API

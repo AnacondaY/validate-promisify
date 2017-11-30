@@ -84,7 +84,7 @@ class ObjectSchema extends BaseSchema {
     date(message: ?String): Object {
         super.customizeRule({
             message,
-            name:'isDate',
+            name:'date',
             validator: value => {
                 const valid = value instanceof Date;
                 if(valid){
@@ -103,7 +103,7 @@ class ObjectSchema extends BaseSchema {
             validator: value => {
                 if(this._isDate){
                     const { date: d1, month: m1, year: y1 } = parseDate(value);
-                    const { date: d2, mobth: m2, year: y2 } = parseDate(new Date());
+                    const { date: d2, month: m2, year: y2 } = parseDate(new Date());
                     return d1 === d2 && m1 === m2 && y1 === y2;
                 }
                 return false;
