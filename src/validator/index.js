@@ -23,7 +23,6 @@ export default class Validator{
     syncValidate(values: Object, options: ?Object = this._options): Object{
         const ret = {};
         const { stopByFirstRule, stopByFirstField, fields } = options;
-        const entries = Object.entries(values);
         
         const pushToStack = (key, value) => {
             const schema = this._schemaMap[key];
@@ -35,20 +34,31 @@ export default class Validator{
                 ret[key] = errors;
             }
         };
-        
-        for(let i = 0; i < entries.length; i ++){
-            const key = entries[i][0];
-            const value = entries[i][1];
-            if(Array.isArray(fields) && fields.indexOf(key) !== -1){
-                pushToStack(key, value);
+
+        Object.keys(this._schemaMap).forEach(key => {
+            const value = values[key];
+            if(fields && Array.isArray(fields)){
+                if(fields.indexOf(key) !== -1){
+                    pushToStack(key, value);
+                }
             }else{
                 pushToStack(key, value);
-            }
-        }
+            }    
+        });
+        
+        // for(let i = 0; i < entries.length; i ++){
+        //     const key = entries[i][0];
+        //     const value = entries[i][1];
+        //     if(Array.isArray(fields) && fields.indexOf(key) !== -1){
+        //         pushToStack(key, value);
+        //     }else{
+        //         pushToStack(key, value);
+        //     }
+        // }
         return isEmptyObject(ret) ? null : ret;
     }   
     
-    validate(values: Object, options: ?Object = this._options): Promise{
+    validate(values: Object = {}, options: ?Object = this._options): Promise{
         const promiseStack = [];
         const { fields } = options;
         
@@ -59,7 +69,7 @@ export default class Validator{
             const promise = new Promise(resolve => {
                 this._schemaMap[key].validate(value).then(result => {
                     const errors = result.filter(ret => ret !== null);
-                    if(errors.length){
+                    if(errors && errors.length){
                         resolve({ [key]: errors });
                     }else{
                         resolve();
@@ -68,10 +78,10 @@ export default class Validator{
             });
             promiseStack.push(promise);
         };
-        
-        Object.entries(values).forEach(entry => {
-            const [ key, value ] = entry;
-            if(fields && Array.isArray(fields) && fields.length){
+
+        Object.keys(this._schemaMap).forEach(key => {
+            const value = values[key];
+            if(fields && Array.isArray(fields)){
                 if(fields.indexOf(key) !== -1){
                     pushToStack(key, value);
                 }
@@ -79,16 +89,24 @@ export default class Validator{
                 pushToStack(key, value);
             }    
         });
+        
+        // Object.entries(values).forEach(entry => {
+        //     const [ key, value ] = entry;
+        //     if(fields && Array.isArray(fields)){
+        //         if(fields.indexOf(key) !== -1){
+        //             pushToStack(key, value);
+        //         }
+        //     }else{
+        //         pushToStack(key, value);
+        //     }    
+        // });
 
         return new Promise((resolve, reject) => {
-            Promise.all(promiseStack).then(errors => {              
+            Promise.all(promiseStack).then(errors => {      
                 const messages = errors.reduce((prevErr, cur) => {
-                    if(cur && prevErr){
-                        return Object.assign({}, prevErr, cur);
-                    }
-                    return {};
-                });
-                if(messages){
+                    return Object.assign(prevErr, cur);
+                }, {});
+                if(messages && !isEmptyObject(messages)){
                     reject(messages);
                 }else{
                     resolve();

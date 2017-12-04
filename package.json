@@ -1,6 +1,6 @@
 {
   "name": "validate-promisify",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A asynchronous form validator by using promise",
   "main": "./release/index.js",
   "dependencies": {},
@@ -26,7 +26,7 @@
   "scripts": {
     "build": "webpack",
     "test": "mocha --require babel-core/register ./test/*.spec.js",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --require js:babel-register ./test/string.spec.js"
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --require js:babel-register ./test/array.spec.js"
   },
   "keywords": [
     "form",

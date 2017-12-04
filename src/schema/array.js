@@ -8,21 +8,19 @@ class ArraySchema extends BaseSchema {
         this.customizeRule({
             message,
             name:'type',
-            validator: value => {
-                const valid = Array.isArray(value);
-                if(valid){
-                    this._isArray = true;
-                }
-                return valid;
-            }
+            validator: value => this._isArray(value)
         });
+    }
+
+    _isArray(value: mixed): Boolean {
+        return Array.isArray(value);
     }
 
     maxLength(length: Number, message: ?String): Object{
         this.customizeRule({
             message,
             name: 'maxLength',
-            validator: value => this._isArray && value.length <= length,
+            validator: value => this._isArray(value) && value.length <= length,
             extraParams: {
                 length
             }
@@ -34,7 +32,7 @@ class ArraySchema extends BaseSchema {
         this.customizeRule({
             message,
             name: 'minLength',
-            validator: value => this._isArray && value.length >= length,
+            validator: value => this._isArray(value) && value.length >= length,
             extraParams: {
                 length
             }
@@ -47,7 +45,7 @@ class ArraySchema extends BaseSchema {
             message,
             name:'subsetOf',
             validator: value => {
-                if(this._isArray){
+                if(this._isArray(value)){
                     return value.every(v => {
                         return superset.indexOf(v) !== -1;
                     });
@@ -66,7 +64,7 @@ class ArraySchema extends BaseSchema {
             message,
             name: 'supersetOf',
             validator: value => {
-                if(this._isArray){
+                if(this._isArray(value)){
                     return subset.every(v => {
                         return value.indexOf(v) !== -1;
                     });
@@ -86,7 +84,7 @@ class ArraySchema extends BaseSchema {
             name: 'unique',
             validator: value => {
                 const map = {};
-                if(this._isArray){
+                if(this._isArray(value)){
                     for(let i = 0; i < value.length; i++){
                         if(typeof map[value[i]] === 'undefined'){
                             map[value[i]] = 1;

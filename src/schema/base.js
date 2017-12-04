@@ -1,5 +1,4 @@
 import lang from '../lang';
-import { isEmptyObject } from './utils';
 
 const INTEPOLATION_REG = /(%|)\{\{([0-9a-zA-Z_]+)\}\}/g;
 

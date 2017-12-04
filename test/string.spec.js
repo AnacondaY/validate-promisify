@@ -76,7 +76,7 @@ describe('===== String Validator =====', () => {
 
     it('validate maxLength', () => {
         return validator
-            .validate({ value8: '1234567890' })
+            .validate({ value8: '1234567890' }, { fields: ['value8'] })
             .then(fullfill)
             .then(() => expect(fullfill.called).to.be.true);
     });

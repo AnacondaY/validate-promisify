@@ -9,14 +9,16 @@ class ObjectSchema extends BaseSchema {
         this.customizeRule({
             message,
             name: 'type',
-            validator: value => {
-                const valid = typeof value === 'object';
-                if(valid){
-                    this._isObject = true;
-                }
-                return valid;
-            }
+            validator: value => this._isObject(value)
         });
+    }
+
+    _isObject(value: mixed): Boolean{
+        return typeof value === 'object';
+    }
+
+    _isDate(value: mixed): Boolean {
+        return value instanceof Date;
     }
 
     oneOf(list: Array<Object>, message: ?String): Object {
@@ -36,7 +38,7 @@ class ObjectSchema extends BaseSchema {
             message,
             name: 'shapeOf',
             validator: value => {
-                if(this._isObject){
+                if(this._isObject(value)){
                     return Object.entries(shape).every(entry => {
                         const [ key, schema ] = entry;
                         return schema.syncValidate(value[key]);
@@ -67,7 +69,12 @@ class ObjectSchema extends BaseSchema {
         super.customizeRule({
             message,
             name: 'instanceOnlyOf',
-            validator: value => value.__proto__.constructor === cls.prototype.constructor
+            validator: value => {
+                if(this._isObject(value)){
+                    return value.__proto__.constructor === cls.prototype.constructor;
+                }
+                return false;
+            }
         });
         return this;
     }
@@ -85,13 +92,7 @@ class ObjectSchema extends BaseSchema {
         super.customizeRule({
             message,
             name:'date',
-            validator: value => {
-                const valid = value instanceof Date;
-                if(valid){
-                    this._isDate = true;
-                }
-                return valid;
-            }
+            validator: value => this._isDate(value)
         });
         return this;
     }
@@ -101,7 +102,7 @@ class ObjectSchema extends BaseSchema {
             message,
             name: 'today',
             validator: value => {
-                if(this._isDate){
+                if(this._isDate(value)){
                     const { date: d1, month: m1, year: y1 } = parseDate(value);
                     const { date: d2, month: m2, year: y2 } = parseDate(new Date());
                     return d1 === d2 && m1 === m2 && y1 === y2;
@@ -117,7 +118,7 @@ class ObjectSchema extends BaseSchema {
             message,
             name: 'currentMonth',
             validator: value => {
-                if(this._isDate){
+                if(this._isDate(value)){
                     const { month: m1, year: y1 } = parseDate(value);
                     const { mobth: m2, year: y2 } = parseDate(new Date());
                     return m1 === m2 && y1 === y2;
@@ -132,7 +133,7 @@ class ObjectSchema extends BaseSchema {
             message,
             name: 'currentYear',
             validator: value => {
-                if(this._isDate){
+                if(this._isDate(value)){
                     return value.getFullYear() === new Date().getFullYear();
                 }
                 return false;

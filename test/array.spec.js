@@ -4,17 +4,14 @@ import Validator, { Schema } from '../src';
 
 describe('===== Array Validator =====', () => {
 
-    let validator;
-
-    before(() => {
-        validator = new Validator({
-            value1: Schema.array().required(),
-            value2: Schema.array().maxLength(3),
-            value3: Schema.array().subsetOf([1, 2]),
-            value4: Schema.array().supersetOf([1, 2, 3, 4]),
-            value5: Schema.array().unique()
-        });
+    let validator = new Validator({
+        value1: Schema.array().required(),
+        value2: Schema.array().maxLength(3),
+        value3: Schema.array().subsetOf([1, 2]),
+        value4: Schema.array().supersetOf([1, 2, 3, 4]),
+        value5: Schema.array().unique()
     });
+
 
     it('validate type', () => {
         expect(validator.syncValidate({ value1: undefined })['value1']).to.has.length(2);

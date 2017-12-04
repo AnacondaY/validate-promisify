@@ -33,7 +33,7 @@ describe('===== Number Validator =====', () => {
     it('type validate', () => {
         expect(validator.syncValidate({ value1: undefined })['value1']).has.length(2);
         return validator
-            .validate({ value1: undefined }, { fields: ['value1'] })
+            .validate({ value1: undefined })
             .then(fullfill)
             .catch(errors => expect(errors['value1']).has.length(2))
             .then(() => expect(fullfill.called).to.be.false);
@@ -42,7 +42,7 @@ describe('===== Number Validator =====', () => {
     it('validate integer', () => {
         expect(validator.syncValidate({ value2: .1 })['value2']).has.length(1);
         return validator
-            .validate({value2: .1}, { fields: ['value2'] })
+            .validate({value2: .1})
             .then(fullfill)
             .catch(errors => expect(errors['value2']).has.length(1))
             .then(() => expect(fullfill.called).to.be.false);
@@ -50,7 +50,7 @@ describe('===== Number Validator =====', () => {
 
     it('validate float', () => {
         return validator
-            .validate({value3: 1}, { fields: ['value3'] })
+            .validate({value3: 1})
             .then(fullfill)
             .catch(errors => expect(errors['value3']).has.length(1))
             .then(() => expect(fullfill.called).to.be.false);
@@ -58,7 +58,7 @@ describe('===== Number Validator =====', () => {
 
     it('validate range', () => {
         return validator
-            .validate({ value4: 0 }, { fields: ['value4'] })
+            .validate({ value4: 0 })
             .then(fullfill)
             .catch(errors => expect(errors['value4']).has.length(1))
             .then(() => expect(fullfill.called).to.be.false);
@@ -66,7 +66,7 @@ describe('===== Number Validator =====', () => {
 
     it('validate greater', () => {
         return validator
-            .validate({ value5: -1 }, { fields: ['value5'] })
+            .validate({ value5: -1 })
             .then(fullfill)
             .catch(errors => expect(errors['value5']).has.length(1))
             .then(() => expect(fullfill.called).to.be.false);
@@ -74,7 +74,7 @@ describe('===== Number Validator =====', () => {
 
     it('validate less', () => {
         return validator
-            .validate({ value6: 2 }, { fields: ['value6'] })
+            .validate({ value6: 2 })
             .then(fullfill)
             .catch(errors => expect(errors['value6']).has.length(1))
             .then(() => expect(fullfill.called).to.be.false);
@@ -82,7 +82,7 @@ describe('===== Number Validator =====', () => {
 
     it('validate oneOf', () => {
         return validator
-            .validate({ value7: 0 }, { fields: ['value7'] })
+            .validate({ value7: 0 })
             .then(fullfill)
             .catch(errors => expect(errors['value7']).has.length(1))
             .then(() => expect(fullfill.called).to.be.false);
@@ -90,7 +90,7 @@ describe('===== Number Validator =====', () => {
 
     it('validate pattern', () => {
         return validator
-            .validate({ value8: -1 }, { fields: ['value8'] })
+            .validate({ value8: -1 })
             .then(fullfill)
             .catch(errors => expect(errors['value8']).has.length(1))
             .then(() => expect(fullfill.called).to.be.false);
