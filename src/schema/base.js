@@ -50,7 +50,12 @@ export default class BaseSchema {
         const errors = [];
         for(let i = 0; i < this._rules.length; i ++){
             let { validator, message, name, extraParams } = this._rules[i];
-            const valid = validator(value);
+            let valid;
+            try{
+                valid = validator(value);
+            }catch(err){
+                valid = false;
+            }
             if(valid === false){
                 message = message || this._getDefaultMessage(name, extraParams) || '';
                 errors.push(message);
@@ -64,7 +69,12 @@ export default class BaseSchema {
         for(let i = 0; i < this._rules.length; i ++){
             const promise = new Promise(resolve => {
                 let { validator, message, name, extraParams } = this._rules[i];
-                let valid = validator(value);
+                let valid;
+                try{
+                    valid = validator(value);
+                }catch(err){
+                    valid = false;
+                }
                 if(valid === false){
                     message = message || this._getDefaultMessage(name, extraParams) || '';
                     resolve(message);
