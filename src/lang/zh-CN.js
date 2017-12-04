@@ -20,7 +20,8 @@ export default {
         notChinese: '请输入非汉字字符',
         ipv4: 'IP地址格式错误',
         ChineseID: '身份证号格式错误',
-        pattern: '输入值不符合指定格式'
+        pattern: '输入值不符合指定格式',
+        required: '必填'
     },
     boolean:{
         

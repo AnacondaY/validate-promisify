@@ -19,7 +19,7 @@ export default class BaseSchema {
             value = value.trim();
             return !!value;
         }else if(Array.isArray(value)){
-            return value && value.length;
+            return value.length > 0;
         }else{
             return typeof value !== 'undefined' && value !== null;
         }
